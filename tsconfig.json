@@ -18,6 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/**/*", "database/migrations/*"],
+  "include": ["src/**/*", "db/migrations/*"],
   "exclude": ["node_modules"]
 }
