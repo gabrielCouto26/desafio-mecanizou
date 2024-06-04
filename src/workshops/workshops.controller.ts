@@ -5,7 +5,9 @@ import { Workshop } from './workshop.entity';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
 import { GetLocationDto } from '../location/dto/get-location.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('mecanizou')
 @Controller('workshops')
 export class WorkshopController {
   constructor(
