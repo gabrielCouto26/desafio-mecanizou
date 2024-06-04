@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Workshop } from '../../workshops/workshop.entity';
+import { LocationService } from '../../location/location.service';
+import { LocationServiceInterface } from '../../location/interface/service.interface';
 
 @Injectable()
 export class SeederService {
   constructor(
     @InjectRepository(Workshop)
     private readonly userRepository: Repository<Workshop>,
+    @Inject(LocationService)
+    private readonly locationService: LocationServiceInterface
   ) {}
 
   async seed() {
@@ -19,7 +23,9 @@ export class SeederService {
     ];
 
     for (const workshop of workshops) {
-        await this.userRepository.save(workshop);
+        const created = await this.userRepository.save(workshop);
+        await this.locationService.save(
+          created.id, created.name, created.latitude, created.longitude)
     }
   }
 }

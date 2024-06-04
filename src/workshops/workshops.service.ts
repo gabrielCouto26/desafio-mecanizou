@@ -1,14 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Workshop } from './workshop.entity';
 import { Workshop as IWorkshop } from './interface/workshop.interface';
+import { LocationService } from '../location/location.service';
+import { LocationServiceInterface } from '../location/interface/service.interface';
 
 @Injectable()
 export class WorkshopService {
   constructor(
     @InjectRepository(Workshop)
     private workshopsRepository: Repository<Workshop>,
+    @Inject(LocationService)
+    private locationService: LocationServiceInterface
   ) {}
 
   async findAll(): Promise<Workshop[]> {
@@ -20,7 +24,10 @@ export class WorkshopService {
   }
 
   async create(workshop: IWorkshop): Promise<Workshop> {
-    return await this.workshopsRepository.save(workshop);
+    const created = await this.workshopsRepository.save(workshop);
+    await this.locationService.save(
+      workshop.id, workshop.name, workshop.latitude, workshop.longitude)
+    return created
   }
 
   async update(id: number, params: IWorkshop): Promise<Workshop | null> {

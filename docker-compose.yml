@@ -7,14 +7,17 @@ services:
     ports:
       - 3000:3000
     environment:
+      - ENV=DEV
       - DB_HOST=database
       - DB_PORT=3306
       - DB_NAME=mecanizou
       - DB_USERNAME=root
       - DB_PASSWORD=root
-      - ENV=DEV
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - database
+      - redis
 
   database:
     image: mysql:lts
@@ -24,3 +27,9 @@ services:
       - ./src/db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     environment:
       - MYSQL_ROOT_PASSWORD=root
+
+  redis:
+    image: redis:6.2.14
+    ports:
+      - 6379:6379
+    
