@@ -1,4 +1,5 @@
 CREATE DATABASE `mecanizou`;
+CREATE DATABASE mecanizou_test;
 
 CREATE TABLE `workshop` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
