@@ -32,4 +32,22 @@ services:
     image: redis:6.2.14
     ports:
       - 6379:6379
-    
+
+  test:
+    build: .
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+    environment:
+      - ENV=TEST
+      - DB_HOST=database
+      - DB_PORT=3306
+      - DB_NAME=mecanizou_test
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    entrypoint: [ "npm", "run", "test:e2e" ]
+    depends_on:
+      - database
+      - redis
